@@ -1,0 +1,14 @@
+main.c:122:6:toggle	0	static
+main.c:140:6:onTimeOutBico	0	static
+main.c:144:6:onResetBico	0	static
+main.c:148:6:onTimeOutBomba	0	static
+main.c:152:6:onResetBomba	0	static
+main.c:93:6:handleRpmInterval	16	static
+main.c:87:6:handleResetRpm	0	static
+main.c:107:6:handler	8	static
+main.c:115:6:HAL_TIM_PeriodElapsedCallback	0	static
+main.c:126:6:handlePulse	0	static
+main.c:132:6:HAL_GPIO_EXTI_Callback	0	static,ignoring_inline_asm
+main.c:247:6:SystemClock_Config	88	static,ignoring_inline_asm
+main.c:162:5:main	80	static,ignoring_inline_asm
+main.c:480:6:Error_Handler	0	static,ignoring_inline_asm
