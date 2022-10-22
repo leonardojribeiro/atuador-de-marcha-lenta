@@ -45,9 +45,9 @@ void verifyRpm() {
 }
 
 void setupTimer() {
-    hw_timer_t *timer = timerBegin(0, 80, true);
+    hw_timer_t *timer = timerBegin(0, 8000, true);
     timerAttachInterrupt(timer, handleTimeInterrupt, true);
-    timerAlarmWrite(timer, 500, true);
+    timerAlarmWrite(timer, 5, true);
     timerAlarmEnable(timer);
 }
 
