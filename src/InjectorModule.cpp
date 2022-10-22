@@ -19,12 +19,12 @@ class InjectorModule {
    public:
     InjectorModule() {
         pinMode(INJECTOR_PIN, OUTPUT);
-        int injectionTime = 10;//EPROM.read(0);
+        int injectionTime = 12;  // EPROM.read(0);
         Serial.println(injectionTime);
         this->injectorTimeout = new Timeout(injectionTime * 1000, setInjectorPinOff, setInjectorPinOn, micros);
     }
 
-    void tick() { 
+    void tick() {
         this->injectorTimeout->tick();
     }
 
@@ -38,7 +38,7 @@ class InjectorModule {
             this->injectorTimeout->setTimeout(newInjectionTime);
         }
     }
-    
+
     unsigned long getTimeout() {
         return this->injectorTimeout->getTimeout();
     }

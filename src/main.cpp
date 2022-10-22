@@ -7,6 +7,7 @@
 #include <PulseModule.cpp>
 #include <PumpModule.cpp>
 #include <interval.cpp>
+#include <timeout.cpp>
 
 PumpModule *pumpModule;
 InjectorModule *injectorModule;
@@ -16,6 +17,7 @@ DisplayModule *displayModule;
 Interval *verificationRpmInterval;
 Interval *updateDisplayInterval;
 Interval *updateRpmInterval;
+Timeout *initialTimeout;
 
 void handleTimeInterrupt() {
     injectorModule->tick();
@@ -30,9 +32,9 @@ void verifyRpm() {
     bool canStartInjector = rpm < 800 && !pulseModule->isPulseHandled();
     if (isRunning) {
         if (isStarting) {
-            verificationRpmInterval->setinterval(500);
+            verificationRpmInterval->setinterval(350);
         } else {
-            verificationRpmInterval->setinterval(250);
+            verificationRpmInterval->setinterval(200);
         }
         if (canStartPump) {
             pumpModule->startPump();
@@ -64,6 +66,14 @@ void handleUpdateRpm() {
     pulseModule->handleRpm();
 }
 
+void handleInitialTimeoutTimeout() {
+    injectorModule->startInjector();
+}
+
+void handleInitialTimeoutStart() {
+    pumpModule->startPump();
+}
+
 void setup() {
     Serial.begin(115200);
     pumpModule = new PumpModule();
@@ -74,10 +84,13 @@ void setup() {
     displayModule = new DisplayModule();
     updateDisplayInterval = new Interval(100, handleUpdateDisplay, millis);
     updateRpmInterval = new Interval(1000, handleUpdateRpm, millis);
+    initialTimeout = new Timeout(500, handleInitialTimeoutTimeout, handleInitialTimeoutStart, millis);
     setupTimer();
+    initialTimeout->start();
 }
 
 void loop() {
+    initialTimeout->tick();
     updateRpmInterval->tick();
     verificationRpmInterval->tick();
     updateDisplayInterval->tick();
